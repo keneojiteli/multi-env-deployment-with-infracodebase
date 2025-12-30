@@ -65,3 +65,6 @@ infrastructure-live/state-lock/terraform.tfstate.backup
 
 # Log files
 *.log
+
+# temp-files
+.temp-workflows/*
