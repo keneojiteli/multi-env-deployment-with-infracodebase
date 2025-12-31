@@ -30,6 +30,7 @@ env:
   AWS_REGION: us-east-1
   TERRAGRUNT_NON_INTERACTIVE: "true"
   TF_INPUT: "false"
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
 jobs:
   detect-changes:
@@ -125,15 +126,31 @@ jobs:
       #       echo "State lock table already exists"
       #     fi
 
-      - name: Terragrunt Init (All Resources)
+      # - name: Terragrunt Init (All Resources)
+      #   run: |
+      #     cd ${{ env.TERRAGRUNT_ROOT }}/${{ matrix.environment }}
+      #     terragrunt run-all init --terragrunt-non-interactive
+
+      # - name: Terragrunt Plan (All Resources)
+      #   run: |
+      #     cd ${{ env.TERRAGRUNT_ROOT }}/${{ matrix.environment }}
+      #     terragrunt run-all plan --terragrunt-non-interactive -out=tfplan
+
+      - name: Terragrunt Init (Dependencies First)
         run: |
           cd ${{ env.TERRAGRUNT_ROOT }}/${{ matrix.environment }}
+          echo "🔄 Initializing VPC first..."
+          terragrunt init --terragrunt-working-dir vpc
+          echo "🔄 Initializing other modules..."
           terragrunt run-all init --terragrunt-non-interactive
 
-      - name: Terragrunt Plan (All Resources)
+      - name: Terragrunt Plan (Dependencies First)
         run: |
           cd ${{ env.TERRAGRUNT_ROOT }}/${{ matrix.environment }}
-          terragrunt run-all plan --terragrunt-non-interactive -out=tfplan
+          echo "📋 Planning VPC first..."
+          terragrunt plan --terragrunt-working-dir vpc -out=tfplan
+          echo "📋 Planning other modules..."
+          terragrunt run-all plan --terragrunt-non-interactive --terragrunt-exclude-dir vpc
 
       - name: Upload Plan Artifacts
         uses: actions/upload-artifact@v4
