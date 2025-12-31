@@ -132,7 +132,7 @@ jobs:
       - name: Terragrunt Plan (All Resources)
         run: |
           cd ${{ env.TERRAGRUNT_ROOT }}/${{ matrix.environment }}
-          terragrunt run-all plan --terragrunt-non-interactive -out=tfplan
+          terragrunt run-all plan -out=tfplan
 
       - name: Upload Plan Artifacts
         uses: actions/upload-artifact@v4
