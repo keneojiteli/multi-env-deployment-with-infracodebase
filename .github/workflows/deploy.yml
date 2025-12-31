@@ -25,7 +25,7 @@ permissions:
   pull-requests: write
 
 env:
-  TERRAGRUNT_VERSION: 0.92.1
+  TERRAGRUNT_VERSION: 0.96.1
   TERRAGRUNT_ROOT: infrastructure-live
   AWS_REGION: us-east-1
   TERRAGRUNT_NON_INTERACTIVE: "true"
@@ -128,11 +128,12 @@ jobs:
       - name: Terragrunt Init (All Resources)
         run: |
           cd ${{ env.TERRAGRUNT_ROOT }}/${{ matrix.environment }}
-          terragrunt run-all init 
+          terragrunt run-all init --terragrunt-non-interactive
+
       - name: Terragrunt Plan (All Resources)
         run: |
           cd ${{ env.TERRAGRUNT_ROOT }}/${{ matrix.environment }}
-          terragrunt run-all plan -out=tfplan
+          terragrunt run-all plan --terragrunt-non-interactive -out=tfplan
 
       - name: Upload Plan Artifacts
         uses: actions/upload-artifact@v4
