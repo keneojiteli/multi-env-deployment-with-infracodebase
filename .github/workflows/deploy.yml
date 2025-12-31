@@ -115,15 +115,15 @@ jobs:
           sudo mv terragrunt_linux_amd64 /usr/local/bin/terragrunt
           terragrunt --version
 
-      - name: Create State Lock Table (if needed)
-        run: |
-          cd ${{ env.TERRAGRUNT_ROOT }}/state-lock
-          if ! aws dynamodb describe-table --table-name terraform-state-lock-table --region ${{ env.AWS_REGION }} > /dev/null 2>&1; then
-            echo "Creating state lock table..."
-            terragrunt apply -auto-approve
-          else
-            echo "State lock table already exists"
-          fi
+      # - name: Create State Lock Table (if needed)
+      #   run: |
+      #     cd ${{ env.TERRAGRUNT_ROOT }}/state-lock
+      #     if ! aws dynamodb describe-table --table-name terraform-state-lock-table --region ${{ env.AWS_REGION }} > /dev/null 2>&1; then
+      #       echo "Creating state lock table..."
+      #       terragrunt apply -auto-approve
+      #     else
+      #       echo "State lock table already exists"
+      #     fi
 
       - name: Terragrunt Init (All Resources)
         run: |
