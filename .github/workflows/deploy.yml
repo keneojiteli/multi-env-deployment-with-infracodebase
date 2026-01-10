@@ -16,7 +16,7 @@ on:
         description: "Action to perform"
         required: true
         type: choice
-        options: [plan, apply, destroy]
+        options: [plan, plan, apply, destroy]
         default: plan
 
 permissions:
@@ -130,7 +130,7 @@ jobs:
         run: |
           cd ${{ env.TERRAGRUNT_ROOT }}/${{ matrix.environment }}
           terragrunt run --all init 
-          # terragrunt run-all init --terragrunt-non-interactive
+
 
       - name: Terragrunt Plan (All Resources)
         run: |

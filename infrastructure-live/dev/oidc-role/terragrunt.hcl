@@ -75,6 +75,20 @@ inputs = {
           "rds:ResourceTag/Environment" = "dev"
         }
       }
+    },
+
+    {
+      sid = "TerraformStateLockDynamoDB"
+      actions = [
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:UpdateItem"
+      ]
+      resources = [
+        "arn:aws:dynamodb:us-east-1:121483139887:table/terraform-state-lock-table"
+      ]
     }
   ]
 }
