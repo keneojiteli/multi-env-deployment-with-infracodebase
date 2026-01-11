@@ -129,7 +129,7 @@ jobs:
       - name: Terragrunt Init (All Resources)
         run: |
           cd ${{ env.TERRAGRUNT_ROOT }}/${{ matrix.environment }}
-          terragrunt run --all init 
+          terragrunt run --all init --terragrunt-non-interactive
 
 
       - name: Terragrunt Plan (All Resources)
